@@ -45,10 +45,10 @@ import nonapi.io.github.classgraph.utils.LogNode;
  */
 public class ArrayClassInfo extends ClassInfo {
     /** The array type signature. */
-    private ArrayTypeSignature arrayTypeSignature;
+    private transient ArrayTypeSignature arrayTypeSignature;
 
     /** The element class info. */
-    private ClassInfo elementClassInfo;
+    private transient ClassInfo elementClassInfo;
 
     /** Default constructor for deserialization. */
     ArrayClassInfo() {

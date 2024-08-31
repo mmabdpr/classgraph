@@ -362,7 +362,7 @@ public class ClassInfo extends ScanResultObject implements Comparable<ClassInfo>
             baseClassName = baseClassName.substring(1);
         }
         if (baseClassName.endsWith(";")) {
-            baseClassName = baseClassName.substring(baseClassName.length() - 1);
+            baseClassName = baseClassName.substring(0, baseClassName.length() - 1);
         }
         baseClassName = baseClassName.replace('/', '.');
 
@@ -3340,7 +3340,7 @@ public class ClassInfo extends ScanResultObject implements Comparable<ClassInfo>
      *         classes to appear in the result.
      */
     public ClassInfoList getClassDependencies() {
-        if (!scanResult.scanSpec.enableInterClassDependencies) {
+        if (scanResult != null && !scanResult.scanSpec.enableInterClassDependencies) {
             throw new IllegalArgumentException(
                     "Please call ClassGraph#enableInterClassDependencies() before #scan()");
         }

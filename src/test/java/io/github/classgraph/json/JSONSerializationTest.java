@@ -1,6 +1,7 @@
 package io.github.classgraph.json;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -245,6 +246,13 @@ public class JSONSerializationTest {
         G g;
     }
 
+    private static class I {
+        F f = new F(3.4028235E38f);
+        F f2 = new F(-3.4028235E38f);
+        F f3 = new F(Float.MAX_VALUE);
+        F f4 = new F(-Float.MAX_VALUE);
+    }
+
     /**
      * Test JSON.
      */
@@ -269,6 +277,20 @@ public class JSONSerializationTest {
         final String json1 = JSONSerializer.serializeObject(obj, 0, false);
 
         assertThat(json0).isEqualTo(json1);
+    }
+
+    @Test
+    public void testMaxFloat() {
+        final I i = new I();
+
+        final String jsonOfI = JSONSerializer.serializeObject(i);
+        
+        assertDoesNotThrow(() -> {
+            final I i2 = JSONDeserializer.deserializeObject(I.class, jsonOfI);
+        });
+        
+        final I i2 = JSONDeserializer.deserializeObject(I.class, jsonOfI);
+        assertThat(i.f.z).isEqualTo(i2.f.z);
     }
 
     /**

@@ -367,7 +367,9 @@ public class ClassInfo extends ScanResultObject implements Comparable<ClassInfo>
             numArrayDims++;
             baseClassName = baseClassName.substring(1);
         }
-        if (baseClassName.endsWith(";")) {
+        if (baseClassName.startsWith("L") && baseClassName.endsWith(";")) {
+            baseClassName = baseClassName.substring(1, baseClassName.length() - 1);
+        } else if (baseClassName.endsWith(";")) {
             baseClassName = baseClassName.substring(0, baseClassName.length() - 1);
         }
         baseClassName = baseClassName.replace('/', '.');
@@ -382,7 +384,11 @@ public class ClassInfo extends ScanResultObject implements Comparable<ClassInfo>
                     arrayTypeSigStrBuf.append('[');
                 }
                 TypeSignature elementTypeSignature;
-                final char baseTypeChar = BaseTypeSignature.getTypeChar(baseClassName);
+                final String baseTypeStr = baseClassName.length() == 1
+                        ? BaseTypeSignature.getTypeStr(baseClassName.charAt(0))
+                        : null;
+                final char baseTypeChar = baseTypeStr == null ? BaseTypeSignature.getTypeChar(baseClassName)
+                        : baseClassName.charAt(0);
                 if (baseTypeChar != '\0') {
                     // Element type is a base (primitive) type
                     arrayTypeSigStrBuf.append(baseTypeChar);

@@ -91,9 +91,15 @@ public class Issue355Test {
             final ArrayTypeSignature paramTypeSignature = (ArrayTypeSignature) yParam
                     .getTypeSignatureOrTypeDescriptor();
             final ArrayClassInfo arrayClassInfo = paramTypeSignature.getArrayClassInfo();
-            assertThat(arrayClassInfo.getElementClassInfo().equals(x));
+            assertThat(arrayClassInfo.getElementClassInfo()).isEqualTo(x);
             assertThat(arrayClassInfo.loadClass()).isEqualTo(X[].class);
             assertThat(arrayClassInfo.loadElementClass()).isEqualTo(X.class);
+
+            final String json = scanResult.toJSON(2);
+            assertThat(json).doesNotContain("\"arrayTypeSignature\"", "\"elementClassInfo\"");
+            try (ScanResult deserializedScanResult = ScanResult.fromJSON(json)) {
+                assertThat(deserializedScanResult.getClassInfo(X.class.getName() + "[]")).isNotNull();
+            }
         }
     }
 }

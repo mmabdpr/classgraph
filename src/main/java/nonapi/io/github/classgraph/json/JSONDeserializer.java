@@ -157,9 +157,6 @@ public class JSONDeserializer {
                     bdValue.compareTo(new BigDecimal(String.valueOf(Float.MAX_VALUE))) > 0) {
                 throw new IllegalArgumentException("Expected float; got out-of-range value " + doubleValue);
             }
-            // if (doubleValue < -Float.MAX_VALUE || doubleValue > Float.MAX_VALUE) {
-            //     throw new IllegalArgumentException("Expected float; got out-of-range value " + doubleValue);
-            // }
             return (float) doubleValue;
 
         } else if (rawType == Double.class || rawType == Double.TYPE) {

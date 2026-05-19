@@ -284,13 +284,16 @@ public class JSONSerializationTest {
         final I i = new I();
 
         final String jsonOfI = JSONSerializer.serializeObject(i);
-        
+
         assertDoesNotThrow(() -> {
-            final I i2 = JSONDeserializer.deserializeObject(I.class, jsonOfI);
+            JSONDeserializer.deserializeObject(I.class, jsonOfI);
         });
-        
+
         final I i2 = JSONDeserializer.deserializeObject(I.class, jsonOfI);
         assertThat(i.f.z).isEqualTo(i2.f.z);
+        assertThat(i.f2.z).isEqualTo(i2.f2.z);
+        assertThat(i.f3.z).isEqualTo(i2.f3.z);
+        assertThat(i.f4.z).isEqualTo(i2.f4.z);
     }
 
     /**
